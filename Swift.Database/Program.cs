@@ -22,6 +22,7 @@ namespace Swift.Database.View
         ///    args[2] --> Input folder
         ///    args[3] --> Object name [optional]
         ///    args[4] --> Schema name [optional]
+        ///    args[5] --> Object type option value from Swift.Database.DTO.Enum.ObjectType
         /// </summary>
         /// <param name="args"></param>
         public static void Main(string[] args)

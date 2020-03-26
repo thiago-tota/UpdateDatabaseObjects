@@ -52,7 +52,21 @@ namespace Swift.Database.xUnitTest
             Assert.Null(Record.Exception(() => View.Program.Main(args)));
         }
 
-        [Fact, Order(2)]
+        [Fact, Order(3)]
+        public void Task1FilterFunctions()
+        {
+            string[] args =
+                new string[]{
+                            "GET",
+                            _generalInfo.ConnectionString,
+                            _generalInfo.ScriptFolder,
+                            string.Empty, string.Empty, "Functions"
+                };
+
+            Assert.Null(Record.Exception(() => View.Program.Main(args)));
+        }
+
+        [Fact, Order(3)]
         public void Task1FilterView()
         {
             string[] args =
@@ -66,7 +80,7 @@ namespace Swift.Database.xUnitTest
             Assert.Null(Record.Exception(() => View.Program.Main(args)));
         }
 
-        [Fact, Order(2)]
+        [Fact, Order(4)]
         public void Task1FilterTriggers()
         {
             string[] args =
@@ -80,7 +94,7 @@ namespace Swift.Database.xUnitTest
             Assert.Null(Record.Exception(() => View.Program.Main(args)));
         }
 
-        [Fact, Order(2)]
+        [Fact, Order(5)]
         public void Task1FilterName()
         {
             string[] args =
@@ -95,7 +109,7 @@ namespace Swift.Database.xUnitTest
             Assert.Null(Record.Exception(() => View.Program.Main(args)));
         }
 
-        [Fact, Order(3)]
+        [Fact, Order(6)]
         public void Task1FilterSchema()
         {
             string[] args =
@@ -109,7 +123,7 @@ namespace Swift.Database.xUnitTest
             Assert.Null(Record.Exception(() => View.Program.Main(args)));
         }
 
-        [Fact, Order(4)]
+        [Fact, Order(7)]
         public void Task2NoFilter()
         {
             string[] args =
@@ -130,7 +144,7 @@ namespace Swift.Database.xUnitTest
                             "SET",
                             _generalInfo.ConnectionString,
                             _generalInfo.ScriptFolder,
-                            "spA_CheckPayments"
+                            "usp_AsyncExecInvoke"
                 };
 
             Assert.Null(Record.Exception(() => View.Program.Main(args)));
@@ -145,6 +159,20 @@ namespace Swift.Database.xUnitTest
                             _generalInfo.ConnectionString,
                             _generalInfo.ScriptFolder,
                             string.Empty, "internal"
+                };
+
+            Assert.Null(Record.Exception(() => View.Program.Main(args)));
+        }
+
+        [Fact, Order(2)]
+        public void Task2FilterView()
+        {
+            string[] args =
+                new string[]{
+                            "SET",
+                            _generalInfo.ConnectionString,
+                            _generalInfo.ScriptFolder,
+                            string.Empty,  string.Empty, "Views"
                 };
 
             Assert.Null(Record.Exception(() => View.Program.Main(args)));

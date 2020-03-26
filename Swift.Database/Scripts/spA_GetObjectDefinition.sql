@@ -12,4 +12,4 @@ FROM sys.all_objects O
 	LEFT JOIN sys.system_sql_modules SM ON O.object_id = SM.object_id	
 WHERE O.name = ISNULL(@ObjectName, O.name) AND O.type = ISNULL(@ObjectType, O.type) AND S.name = ISNULL(@SchemaName, s.name)
 	AND LOWER(S.name) NOT IN('sys', 'information_schema') 
-	--AND (M.definition IS NOT NULL OR SM.definition IS NOT NULL OR O.type IN ('FN','AF','FS','FT'))
+	AND (M.definition IS NOT NULL OR SM.definition IS NOT NULL OR O.type IN ('FN','AF','FS','FT', 'IF', 'TF', 'TR', 'V', 'P'))

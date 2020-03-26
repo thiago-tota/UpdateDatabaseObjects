@@ -259,7 +259,7 @@ namespace Swift.Database.Model
                         for (int i = 0; i < queries.Length; i++)
                         {
                             //Remove Encryptation if exists
-                            queries[i] = queries[i].Replace("WITH ENCRYPTION", string.Empty);
+                            queries[i] = Regex.Replace(queries[i], "WITH ENCRYPTION*([^\\s]+)", string.Empty, RegexOptions.IgnoreCase);
 
                             Console.WriteLine(string.Format("Updating object {0} query {1} of {2}.", objectName, i + 1, queries.Length));
                             Console.WriteLine("");
@@ -324,7 +324,7 @@ namespace Swift.Database.Model
             if (ObjectType.Functions.GetValue().Contains(objectType))
                 return new KeyValuePair<string, string>("CREATE FUNCTION", "ALTER FUNCTION");
             else if (ObjectType.Procedures.GetValue().Contains(objectType))
-                return new KeyValuePair<string, string>("CREATE PROCEDURE", "ALTER PROCEDURE");
+                return new KeyValuePair<string, string>("CREATE PROC*([^\\s]+)", "ALTER PROCEDURE");
             else if (ObjectType.Triggers.GetValue().Contains(objectType))
                 return new KeyValuePair<string, string>("CREATE TRIGGER", "ALTER TRIGGER");
             else if (ObjectType.Views.GetValue().Contains(objectType))
@@ -337,7 +337,9 @@ namespace Swift.Database.Model
         {
             if (definition.ToUpper().Contains("CREATE FUNCTION"))
                 return ObjectType.Functions.GetValue().First();
-            else if (definition.ToUpper().Contains("CREATE PROCEDURE"))
+            else if (definition.ToUpper().Contains("CREATE AGGREGATE"))
+                return ObjectType.AggregateFunctions.GetValue().First();
+            else if (Regex.IsMatch(definition, "CREATE PROC*([^\\s]+)", RegexOptions.IgnoreCase))
                 return ObjectType.Procedures.GetValue().First();
             else if (definition.ToUpper().Contains("CREATE TRIGGER"))
                 return ObjectType.Triggers.GetValue().First();
@@ -356,8 +358,8 @@ namespace Swift.Database.Model
                 {
                     if (objectDefinition[count].Trim().Equals(string.Empty)
                         || objectDefinition[count].Trim().ToUpper().Equals("GO")
-                        || objectDefinition[count].Trim().ToUpper().Equals("SET QUOTED_IDENTIFIER ON")
-                        || objectDefinition[count].Trim().ToUpper().Equals("SET ANSI_NULLS ON"))
+                        || objectDefinition[count].Trim().ToUpper().Contains("SET QUOTED_IDENTIFIER")
+                        || objectDefinition[count].Trim().ToUpper().Contains("SET ANSI_NULLS"))
                         objectDefinition.RemoveAt(count);
                     else
                         break;
